@@ -32,16 +32,24 @@ const Statistic = (props) => {
   )
 }
 
-const Statistics = ({ good, neutral, bad, all, average, positive }) => {
+const Statistics = (props) => {
+  if (props.all === 0) {
+    return (
+      <div>
+        <Header title='statistics' />
+        <p>No feedback given</p>
+      </div>
+    )
+  }
   return (
     <div>
       <Header title='statistics' />
-      <Statistic text='good' score={good} />
-      <Statistic text='neutral' score={neutral} />
-      <Statistic text='bad' score={bad} />
-      <Statistic text='all' score={all} />
-      <Statistic text='average' score={average} />
-      <Statistic text='positive' score={positive} />
+      <Statistic text='good' score={props.good} />
+      <Statistic text='neutral' score={props.neutral} />
+      <Statistic text='bad' score={props.bad} />
+      <Statistic text='all' score={props.all} />
+      <Statistic text='average' score={props.average} />
+      <Statistic text='positive' score={props.positive} />
     </div>
   )
 }
