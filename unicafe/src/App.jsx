@@ -20,15 +20,25 @@ const Button = ({ onPress, text }) => {
 const Statistic = (props) => {
   if (props.text === 'positive') {
     return (
-      <div>
-        {props.text} {props.score} %
-      </div>
+      <>
+        <td>
+          {props.text}
+        </td>
+        <td>
+          {props.score} %
+        </td>
+      </>
     )
   }
   return (
-    <div>
-      {props.text} {props.score}
-    </div>
+    <>
+      <td>
+        {props.text}
+      </td>
+      <td>
+        {props.score}
+      </td>
+    </>
   )
 }
 
@@ -44,12 +54,28 @@ const Statistics = (props) => {
   return (
     <div>
       <Header title='statistics' />
-      <Statistic text='good' score={props.good} />
-      <Statistic text='neutral' score={props.neutral} />
-      <Statistic text='bad' score={props.bad} />
-      <Statistic text='all' score={props.all} />
-      <Statistic text='average' score={props.average} />
-      <Statistic text='positive' score={props.positive} />
+      <table>
+        <tbody>
+          <tr>
+            <Statistic text='good' score={props.good} />
+          </tr>
+          <tr>
+            <Statistic text='neutral' score={props.neutral} />
+          </tr>
+          <tr>
+            <Statistic text='bad' score={props.bad} />
+          </tr>
+          <tr>
+            <Statistic text='all' score={props.all} />
+          </tr>
+          <tr>
+            <Statistic text='average' score={props.average} />
+          </tr>
+          <tr>
+            <Statistic text='positive' score={props.positive} />
+          </tr>
+        </tbody>
+      </table>
     </div>
   )
 }
@@ -109,7 +135,6 @@ const App = () => {
       <Button onPress={handleNeutralClick} text='neutral' />
       <Button onPress={handleBadClick} text='bad' />
       <Statistics good={good} neutral={neutral} bad={bad} all={all} average={average} positive={positive} />
-
     </div>
   )
 }
