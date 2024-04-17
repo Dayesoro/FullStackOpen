@@ -4,12 +4,11 @@ import React from 'react'
 
 const Button = ({ onPress, text }) => {
   return (
-    <div>
+    <>
       <button onClick={onPress}>{text}</button>
-    </div>
+    </>
   )
 }
-
 
 
 const App = () => {
@@ -25,17 +24,29 @@ const App = () => {
   ]
 
   const [selected, setSelected] = useState(0)
+  const [votes, setVotes] = useState(Array(anecdotes.length).fill(0))
 
-  const handleClick = () => {
+  const changeAnecdote = () => {
     const randomNumber = Math.floor(Math.random() * anecdotes.length)
-    const randomQuote = randomNumber
-    setSelected(randomQuote)
+    const currentAnecdote = randomNumber
+    setSelected(currentAnecdote)
+    console.log(`current anecdote:${currentAnecdote}`);
   }
+
+  const calculateVote = () => {
+    const copy = [...votes]
+    copy[selected] += 1
+    setVotes(copy)
+    console.log(copy);
+  }
+
 
   return (
     <div>
       {anecdotes[selected]}
-      <Button onPress={handleClick} text='next anecdote' />
+      <div>has {votes[selected]} votes</div>
+      <Button onPress={calculateVote} text='vote' />
+      <Button onPress={changeAnecdote} text='next anecdote' />
     </div>
   )
 }
