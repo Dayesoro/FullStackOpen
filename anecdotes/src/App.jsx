@@ -42,7 +42,7 @@ const App = () => {
       return currentNumber = currentNumber > arr[maxIndex] ? currentIndex : maxIndex;
     };
 
-    const largestIndex = array.reduce(compareNumbers);
+    const largestIndex = array.reduce(compareNumbers, 0);
     setMostVotes(largestIndex)
     console.log(`The Anecdote with most vote is: ${anecdotes[largestIndex]} `)
 
