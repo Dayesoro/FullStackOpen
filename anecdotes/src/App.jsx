@@ -2,6 +2,14 @@ import { useState } from 'react'
 
 import React from 'react'
 
+const Header = ({ title }) => {
+  return (
+    <div>
+      <h2>{title}</h2>
+    </div>
+  )
+}
+
 const Button = ({ onPress, text }) => {
   return (
     <>
@@ -25,6 +33,22 @@ const App = () => {
 
   const [selected, setSelected] = useState(0)
   const [votes, setVotes] = useState(Array(anecdotes.length).fill(0))
+  const [mostVotes, setMostVotes] = useState(0)
+
+
+  const findIndexOfHighestVote = (array) => {
+
+    const compareNumbers = (maxIndex, currentNumber, currentIndex, arr) => {
+      return currentNumber = currentNumber > arr[maxIndex] ? currentIndex : maxIndex;
+    };
+
+    const largestIndex = array.reduce(compareNumbers);
+    setMostVotes(largestIndex)
+    console.log(`The Anecdote with most vote is: ${anecdotes[largestIndex]} `)
+
+    return largestIndex;
+
+  }
 
   const changeAnecdote = () => {
     const randomNumber = Math.floor(Math.random() * anecdotes.length)
@@ -38,15 +62,20 @@ const App = () => {
     copy[selected] += 1
     setVotes(copy)
     console.log(copy);
+    findIndexOfHighestVote(copy)
   }
 
 
   return (
     <div>
+      <Header title='Anecdote of the day' />
       {anecdotes[selected]}
       <div>has {votes[selected]} votes</div>
       <Button onPress={calculateVote} text='vote' />
       <Button onPress={changeAnecdote} text='next anecdote' />
+      <Header title='Anecdote with most votes' />
+      {anecdotes[mostVotes]}
+      <div>has {votes[mostVotes]} votes</div>
     </div>
   )
 }
