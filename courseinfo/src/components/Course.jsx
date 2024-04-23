@@ -1,13 +1,9 @@
-import Header from "./Header"
-import Content from "./Content"
-import Total from "./Total"
+import CourseDetail from "./CourseDetail"
 
-const Course = ({ course }) => {
+const Course = ({ courses }) => {
     return (
         <div>
-            <Header courseName={course.name} />
-            <Content courseParts={course.parts} />
-            <Total courseParts={course.parts} />
+            {courses.map(course => <CourseDetail key={course.id} course={course} />)}
         </div>
     )
 }

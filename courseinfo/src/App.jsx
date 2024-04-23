@@ -1,4 +1,4 @@
-import Courses from "./components/Courses"
+import Course from "./components/Course"
 
 const App = () => {
   const courses = [
@@ -49,7 +49,7 @@ const App = () => {
   return (
     <div>
       <h1>Web development curriculum</h1>
-      <Courses courses={courses} />
+      <Course courses={courses} />
     </div>
   )
 }
