@@ -12,9 +12,17 @@ const App = () => {
       name: newName,
     }
 
-    setPersons(persons.concat(nameObject))
-    setNewName('')
+    // Check if the 'nameObject' object already exists in the 'persons' array
+    const existingObject = persons.find(person => person.name === nameObject.name)
+
+    if (existingObject) {
+      alert(`${newName} is already added to phonebook`)
+    } else {
+      setPersons(persons.concat(nameObject))
+      setNewName('')
+    }
   }
+
 
   const handleNameChange = (event) => {
     setNewName(event.target.value)
