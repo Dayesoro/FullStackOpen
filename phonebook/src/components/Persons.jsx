@@ -1,4 +1,4 @@
-const Person = ({ person }) => {
+const Persons = ({ person }) => {
     return (
         <div>
             {person.name} {person.number}
@@ -6,4 +6,4 @@ const Person = ({ person }) => {
     )
 }
 
-export default Person
+export default Persons
