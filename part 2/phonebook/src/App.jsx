@@ -25,7 +25,7 @@ const App = () => {
     const personObject = {
       name: newName,
       number: newNumber,
-      id: persons.length + 1,
+      // id: persons.length + 1,
     }
     // Check if the 'personObject' object already exists in the 'persons' array
     const existingObject = persons.find(person => person.name === personObject.name && person.number === personObject.number)
@@ -33,9 +33,14 @@ const App = () => {
     if (existingObject) {
       alert(`${newName} ${newNumber} is already added to phonebook`)
     } else {
-      setPersons(persons.concat(personObject))
-      setNewName('')
-      setNewNumber('')
+      axios
+        .post('http://localhost:3002/persons', personObject)
+        .then(response => {
+          setPersons(persons.concat(response.data))
+          setNewName('')
+          setNewNumber('')
+        })
+      
     }
   }
 
