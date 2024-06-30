@@ -43,6 +43,23 @@ const App = () => {
     }
   }
 
+  const deletePerson = (id, name) => {
+  if (window.confirm(`Delete ${name}?`)) {
+    personService
+      .remove(id)
+      .then(() => {
+        setPersons(persons.filter(person => person.id !== id));
+        alert(`${name} has been successfully deleted.`);
+      })
+      .catch(error => {
+        alert(`Failed to delete ${name}: ${error.message}`);
+      });
+  } else {
+    alert(`Deletion of ${name} was canceled.`);
+  }
+};
+
+
 
   const handleNameChange = (event) => {
     setNewName(event.target.value)
@@ -84,7 +101,7 @@ const App = () => {
       <h3>Numbers</h3>
 
       {personsToShow.map(person =>
-        <Persons key={person.id} person={person} />)}
+        <Persons key={person.id} person={person} deletePerson={() => deletePerson(person.id,person.name)} />)}
     </div>
   )
 }
