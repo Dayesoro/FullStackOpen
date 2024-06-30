@@ -49,14 +49,11 @@ const App = () => {
       .remove(id)
       .then(() => {
         setPersons(persons.filter(person => person.id !== id));
-        alert(`${name} has been successfully deleted.`);
       })
       .catch(error => {
         alert(`Failed to delete ${name}: ${error.message}`);
       });
-  } else {
-    alert(`Deletion of ${name} was canceled.`);
-  }
+  } 
 };
 
 
