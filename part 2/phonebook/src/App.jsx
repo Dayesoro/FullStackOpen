@@ -27,10 +27,18 @@ const App = () => {
       number: newNumber,
     }
     // Check if the 'personObject' object already exists in the 'persons' array
-    const existingObject = persons.find(person => person.name === personObject.name && person.number === personObject.number)
+    const existingObject = persons.find(person => person.name === personObject.name || person.number === personObject.number)
+    console.log(existingObject);
+    const changedPerson = { ...existingObject, number: newNumber }
+    console.log(changedPerson);
 
     if (existingObject) {
-      alert(`${newName} ${newNumber} is already added to phonebook`)
+      if (window.confirm(`${personObject.name} is already added to phonebook, replace the old number with a new one?`)) {
+        personService.update(existingObject.id, changedPerson)
+                     .then(returnedPerson => {
+                      setPersons(persons.map(person => person.id !== existingObject.id ? person : returnedPerson))
+                     })
+      }
     } else {
       personService
         .create(personObject)
@@ -42,6 +50,8 @@ const App = () => {
       
     }
   }
+
+
 
   const deletePerson = (id, name) => {
   if (window.confirm(`Delete ${name}?`)) {
