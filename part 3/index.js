@@ -56,14 +56,31 @@ app.delete('/api/persons/:id', (request, response) => {
 })
 
 app.post('/api/persons', (request, response) => {
+
+  const { name, number } = request.body
+
+  // Check if name or number is missing
+    if (!name || !number) {
+        return response.status(400).json({ error: 'name or number is missing' });
+    }
+
+    // Check if name already exists in the phonebook
+    const existingPerson = persons.find(person => person.name === name);
+    if (existingPerson) {
+        return response.status(400).json({ error: 'name must be unique' });
+    }
+  
     const id = Math.floor(Math.random() * 20000)
 
-    const person = request.body
-    person.id = id
+    const newPerson = {
+        id: id.toString(),
+        name,
+        number
+    };
 
-    persons = persons.concat(person)
+    persons = persons.concat(newPerson)
 
-    response.json(person)
+    response.json(newPerson)
 })
 
 const PORT = 3001
