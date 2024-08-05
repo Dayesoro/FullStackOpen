@@ -4,7 +4,15 @@ const app = express()
 
 app.use(express.json())
 
-app.use(morgan('tiny'));
+// app.use(morgan('tiny'));
+
+// Create a Custom Morgan Token to Log the Request Body
+morgan.token('body', (req) => {
+  return JSON.stringify(req.body);
+});
+
+// Configure Morgan to Use the Custom Token
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'));
 
 let persons = [
     { 
