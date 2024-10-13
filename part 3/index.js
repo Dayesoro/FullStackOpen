@@ -45,17 +45,34 @@ let persons = [
     }
 ]
 
+app.get('/info', (request, response) => {
+    const phoneBookSize = persons.length
+    const requestTime = new Date()
+    response.send(`Phonebook has info for ${phoneBookSize} people <br/><br/> 
+        ${requestTime}`)
+})
+
 app.get('/api/persons', (request, response) => {
     Person.find({}).then(persons => {
     response.json(persons)
   })
 })
 
-app.get('/info', (request, response) => {
-    const phoneBookSize = persons.length
-    const requestTime = new Date()
-    response.send(`Phonebook has info for ${phoneBookSize} people <br/><br/> 
-        ${requestTime}`)
+app.post('/api/persons', (request, response) => {
+  const { name, number } = request.body
+  console.log(`${name} ${number}`);
+    if (!name && !number) {
+        return response.status(400).json({ error: 'content missing' })
+    }
+
+  const person = new Person({
+    name: name,
+    number: number,
+  })
+
+  person.save().then(savedPerson => {
+    response.json(savedPerson)
+  })
 })
 
 app.get('/api/persons/:id', (request, response) => {
@@ -76,33 +93,7 @@ app.delete('/api/persons/:id', (request, response) => {
   response.status(204).end()
 })
 
-app.post('/api/persons', (request, response) => {
 
-  const { name, number } = request.body
-
-  // Check if name or number is missing
-    if (!name || !number) {
-        return response.status(400).json({ error: 'name or number is missing' });
-    }
-
-    // Check if name already exists in the phonebook
-    const existingPerson = persons.find(person => person.name === name);
-    if (existingPerson) {
-        return response.status(400).json({ error: 'name must be unique' });
-    }
-  
-    const id = Math.floor(Math.random() * 20000)
-
-    const newPerson = {
-        id: id.toString(),
-        name,
-        number
-    };
-
-    persons = persons.concat(newPerson)
-
-    response.json(newPerson)
-})
 
 const PORT = process.env.PORT || 3005
 app.listen(PORT, () => {
