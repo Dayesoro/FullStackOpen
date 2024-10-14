@@ -37,10 +37,12 @@ const unknownEndpoint = (request, response) => {
 
 
 app.get('/info', (request, response) => {
-    const phoneBookSize = persons.length
-    const requestTime = new Date()
-    response.send(`Phonebook has info for ${phoneBookSize} people <br/><br/> 
+  Person.countDocuments({})
+    .then(count => {
+      const requestTime = new Date();
+      response.send(`Phonebook has info for ${count} people <br/><br/> 
         ${requestTime}`)
+    })
 })
 
 app.get('/api/persons', (request, response) => {
@@ -66,15 +68,16 @@ app.post('/api/persons', (request, response) => {
   })
 })
 
-app.get('/api/persons/:id', (request, response) => {
-    const id = request.params.id
-    const person = persons.find(person => person.id === id)
-
-    if (person) {
-    response.json(person)
-  } else {
-    response.status(404).end()
-  }
+app.get('/api/persons/:id', (request, response, next) => {
+    Person.findById(request.params.id)
+    .then(person => {
+      if (person) {
+        response.json(person)
+      } else {
+        response.status(404).end()
+      }
+    })
+    .catch(error => next(error))
 })
 
 app.delete('/api/persons/:id', (request, response, next) => {
