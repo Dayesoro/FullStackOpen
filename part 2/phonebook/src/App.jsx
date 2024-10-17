@@ -12,7 +12,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filteredNumbers, setFilteredNumbers] = useState('')
-  const [notification, setNotification] = useState(null)
+  const [notification, setNotification] = useState({ message: null, type: null })
 
   useEffect(() => {
     personService
@@ -30,9 +30,7 @@ const App = () => {
     }
     // Check if the 'personObject' object already exists in the 'persons' array
     const existingObject = persons.find(person => person.name === personObject.name || person.number === personObject.number)
-    console.log(existingObject);
     const changedPerson = { ...existingObject, number: newNumber }
-    console.log(changedPerson);
 
     if (existingObject) {
       if (window.confirm(`${personObject.name} is already added to phonebook, replace the old number with a new one?`)) {
@@ -40,11 +38,9 @@ const App = () => {
                      .then(returnedPerson => {
                       setPersons(persons.map(person => person.id !== existingObject.id ? person : returnedPerson))
                      })
-        setNotification(
-          `updated ${existingObject.name}`
-        )
+        setNotification({ message: `Updated ${existingObject.name}`, type: 'success' })
         setTimeout(() => {
-          setNotification(null)
+          setNotification({ message: null, type: null })
         }, 5000)
       }
     } else {
@@ -55,12 +51,13 @@ const App = () => {
           setNewName('')
           setNewNumber('')
         })
+        .catch(error => {
+        setNotification({ message: error.response.data.error, type: 'error' })
+      })
       
-      setNotification(
-          `Added ${personObject.name}`
-        )
+      setNotification({ message: `Added ${personObject.name}`, type: 'success' })
         setTimeout(() => {
-          setNotification(null)
+          setNotification({ message: null, type: null })
         }, 5000)
     }
   }
@@ -106,7 +103,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={notification}/>
+      <Notification message={notification.message} type={notification.type} />
       <Filter handleFilteredNumbers={handleFilteredNumbers} filteredNumbers={filteredNumbers} />
 
       <h3>add a new</h3>
