@@ -38,6 +38,9 @@ const App = () => {
                      .then(returnedPerson => {
                       setPersons(persons.map(person => person.id !== existingObject.id ? person : returnedPerson))
                      })
+                      .catch(error => {
+                          setNotification({ message: error.response.data.error, type: 'error' })
+                      })
         setNotification({ message: `Updated ${existingObject.name}`, type: 'success' })
         setTimeout(() => {
           setNotification({ message: null, type: null })
