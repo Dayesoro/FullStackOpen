@@ -36,12 +36,12 @@ const App = () => {
       if (window.confirm(`${personObject.name} is already added to phonebook, replace the old number with a new one?`)) {
         personService.update(existingObject.id, changedPerson)
                      .then(returnedPerson => {
-                      setPersons(persons.map(person => person.id !== existingObject.id ? person : returnedPerson))
+                       setPersons(persons.map(person => person.id !== existingObject.id ? person : returnedPerson))
+                       setNotification({ message: `Updated ${existingObject.name}`, type: 'success' })
                      })
                       .catch(error => {
                           setNotification({ message: error.response.data.error, type: 'error' })
                       })
-        setNotification({ message: `Updated ${existingObject.name}`, type: 'success' })
         setTimeout(() => {
           setNotification({ message: null, type: null })
         }, 5000)
