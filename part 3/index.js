@@ -11,8 +11,8 @@ const morgan = require('morgan')
 
 // Create a Custom Morgan Token to Log the Request Body
 morgan.token('body', (req) => {
-  return JSON.stringify(req.body);
-});
+  return JSON.stringify(req.body)
+})
 
 const errorHandler = (error, request, response, next) => {
   console.error(error.message)
@@ -31,7 +31,7 @@ const cors = require('cors')
 app.use(cors())
 app.use(express.json())
 // Configure Morgan to Use the Custom Token
-app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'));
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' })
@@ -41,21 +41,21 @@ const unknownEndpoint = (request, response) => {
 app.get('/info', (request, response) => {
   Person.countDocuments({})
     .then(count => {
-      const requestTime = new Date();
+      const requestTime = new Date()
       response.send(`Phonebook has info for ${count} people <br/><br/> 
         ${requestTime}`)
     })
 })
 
 app.get('/api/persons', (request, response) => {
-    Person.find({}).then(persons => {
+  Person.find({}).then(persons => {
     response.json(persons)
   })
 })
 
 app.post('/api/persons', (request, response, next) => {
   const { name, number } = request.body
-  
+
   const person = new Person({
     name: name,
     number: number,
@@ -63,13 +63,13 @@ app.post('/api/persons', (request, response, next) => {
 
   person.save()
     .then(savedPerson => {
-    response.json(savedPerson)
-  })
+      response.json(savedPerson)
+    })
     .catch(error => next(error))
 })
 
 app.get('/api/persons/:id', (request, response, next) => {
-    Person.findById(request.params.id)
+  Person.findById(request.params.id)
     .then(person => {
       if (person) {
         response.json(person)
@@ -82,14 +82,14 @@ app.get('/api/persons/:id', (request, response, next) => {
 
 app.delete('/api/persons/:id', (request, response, next) => {
   Person.findByIdAndDelete(request.params.id)
-    .then(result => {
+    .then(() => {
       response.status(204).end()
     })
     .catch(error => next(error))
 })
 
 app.put('/api/persons/:id', (request, response, next) => {
-  const {name, number} = request.body
+  const { name, number } = request.body
 
   Person.findByIdAndUpdate(
     request.params.id,
@@ -107,5 +107,5 @@ app.use(errorHandler)
 
 const PORT = process.env.PORT || 8004
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`)
+  console.log(`Server running on port ${PORT}`)
 })
