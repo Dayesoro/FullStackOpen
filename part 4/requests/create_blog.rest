@@ -1,0 +1,9 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+    "title": "Love your God",
+    "author": "God",
+    "url":"Thou shall Love the loord your God",
+    "likes": 9893763
+}
